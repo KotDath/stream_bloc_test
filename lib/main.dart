@@ -1,5 +1,5 @@
 import 'package:stream_bloc_test/calculator_bloc.dart';
-import 'package:stream_bloc_test/calculator_event_add.dart';
+import 'package:stream_bloc_test/calculator_event.dart';
 
 void main() {
   CalculatorBloc bloc = CalculatorBloc();
@@ -8,7 +8,15 @@ void main() {
     onDone: () => bloc.close(),
   );
 
-  bloc.addEvent(CalculatorEventAdd(5));
-  bloc.addEvent(CalculatorEventAdd(5));
-  bloc.addEvent(CalculatorEventAdd(5));
+  bloc.addEvent(const CalculatorEventAdd(5));
+  bloc.addEvent(const CalculatorEventAdd(5));
+  bloc.addEvent(const CalculatorEventAdd(5));
+
+  bloc.addEvent(const CalculatorEventSub(5));
+  bloc.addEvent(const CalculatorEventSub(5));
+  bloc.addEvent(const CalculatorEventSub(5));
+
+  bloc.addEvent(const CalculatorEventAdd(5));
+  bloc.addEvent(const CalculatorEventMulti(5));
+  bloc.addEvent(const CalculatorEventDiv(5));
 }
