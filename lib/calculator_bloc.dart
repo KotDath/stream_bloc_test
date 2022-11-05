@@ -1,6 +1,8 @@
 import 'package:stream_bloc/stream_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'calculator_repository.dart';
+
 part 'calculator_bloc.freezed.dart';
 
 @freezed
@@ -29,14 +31,23 @@ class CalculatorState with _$CalculatorState {
 }
 
 class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
-  CalculatorBloc() : super(const CalculatorState.idle(0));
+  final ICalculatorRepository _repository;
+
+  CalculatorBloc({
+    required ICalculatorRepository repository,
+    double? initialNumber,
+  })  : _repository = repository,
+        super(CalculatorState.idle(initialNumber ?? 0));
 
   Stream<CalculatorState> _add(CalculatorEventAdd event) async* {
+
+
     yield CalculatorState.loading(state.number);
     
     await Future.delayed(const Duration(seconds: 1));
 
     try {
+      await _repository.setCache(state.number + event.number);
       yield CalculatorState.idle(state.number + event.number);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
@@ -52,6 +63,7 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
     await Future.delayed(const Duration(seconds: 1));
 
     try {
+      await _repository.setCache(state.number - event.number);
       yield CalculatorState.idle(state.number - event.number);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
@@ -67,6 +79,7 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
     await Future.delayed(const Duration(seconds: 1));
 
     try {
+      await _repository.setCache(state.number * event.number);
       yield CalculatorState.idle(state.number * event.number);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
@@ -85,6 +98,7 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
       if (event.number == 0) {
         throw ArgumentError('На 0 делить нельзя');
       }
+      await _repository.setCache(state.number / event.number);
       yield CalculatorState.idle(state.number / event.number);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);

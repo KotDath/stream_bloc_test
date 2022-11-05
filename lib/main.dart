@@ -1,7 +1,21 @@
 import 'package:stream_bloc_test/calculator_bloc.dart';
+import 'package:stream_bloc_test/key_value_store.dart';
 
-void main() {
-  CalculatorBloc bloc = CalculatorBloc();
+import 'calculator_repository.dart';
+
+void main() async {
+  final store = KeyValueStore();
+  final repository = CalculatorRepository(
+    store: store,
+  );
+
+  final initialNumber = await repository.getCache();
+
+  CalculatorBloc bloc = CalculatorBloc(
+    repository: repository,
+    initialNumber: initialNumber,
+  );
+
   bloc.stream.listen(
     (event) => print(event.toString()),
     onDone: () => bloc.close(),
