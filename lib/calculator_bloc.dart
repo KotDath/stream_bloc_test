@@ -47,8 +47,9 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
     await Future.delayed(const Duration(seconds: 1));
 
     try {
-      await _repository.setCache(state.number + event.number);
-      yield CalculatorState.idle(state.number + event.number);
+      final resultOperation = state.number + event.number;
+      await _repository.setCache(resultOperation);
+      yield CalculatorState.idle(resultOperation);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
       rethrow;
@@ -63,8 +64,9 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
     await Future.delayed(const Duration(seconds: 1));
 
     try {
-      await _repository.setCache(state.number - event.number);
-      yield CalculatorState.idle(state.number - event.number);
+      final resultOperation = state.number - event.number;
+      await _repository.setCache(resultOperation);
+      yield CalculatorState.idle(resultOperation);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
       rethrow;
@@ -79,8 +81,9 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
     await Future.delayed(const Duration(seconds: 1));
 
     try {
-      await _repository.setCache(state.number * event.number);
-      yield CalculatorState.idle(state.number * event.number);
+      final resultOperation = state.number * event.number;
+      await _repository.setCache(resultOperation);
+      yield CalculatorState.idle(resultOperation);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
       rethrow;
@@ -98,8 +101,9 @@ class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
       if (event.number == 0) {
         throw ArgumentError('На 0 делить нельзя');
       }
-      await _repository.setCache(state.number / event.number);
-      yield CalculatorState.idle(state.number / event.number);
+      final resultOperation = state.number / event.number;
+      await _repository.setCache(resultOperation);
+      yield CalculatorState.idle(resultOperation);
     } on Object catch (e) {
       yield CalculatorState.error(state.number, e);
       rethrow;
