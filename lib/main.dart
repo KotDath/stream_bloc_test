@@ -1,10 +1,9 @@
 import 'package:stream_bloc_test/calculator_bloc.dart';
-import 'package:stream_bloc_test/calculator_event.dart';
 
 void main() {
   CalculatorBloc bloc = CalculatorBloc();
   bloc.stream.listen(
-    (event) => print(event.number),
+    (event) => print(event.toString()),
     onDone: () => bloc.close(),
   );
 
