@@ -3,20 +3,20 @@ import 'package:stream_bloc_test/calculator_event.dart';
 
 void main() {
   CalculatorBloc bloc = CalculatorBloc();
-  bloc.state.listen(
+  bloc.stream.listen(
     (event) => print(event.number),
     onDone: () => bloc.close(),
   );
 
-  bloc.addEvent(const CalculatorEventAdd(5));
-  bloc.addEvent(const CalculatorEventAdd(5));
-  bloc.addEvent(const CalculatorEventAdd(5));
+  bloc.add(const CalculatorEventAdd(5));
+  bloc.add(const CalculatorEventAdd(5));
+  bloc.add(const CalculatorEventAdd(5));
 
-  bloc.addEvent(const CalculatorEventSub(5));
-  bloc.addEvent(const CalculatorEventSub(5));
-  bloc.addEvent(const CalculatorEventSub(5));
+  bloc.add(const CalculatorEventSub(5));
+  bloc.add(const CalculatorEventSub(5));
+  bloc.add(const CalculatorEventSub(5));
 
-  bloc.addEvent(const CalculatorEventAdd(5));
-  bloc.addEvent(const CalculatorEventMulti(5));
-  bloc.addEvent(const CalculatorEventDiv(5));
+  bloc.add(const CalculatorEventAdd(5));
+  bloc.add(const CalculatorEventMulti(5));
+  bloc.add(const CalculatorEventDiv(5));
 }

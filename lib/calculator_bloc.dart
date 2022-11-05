@@ -3,53 +3,34 @@ import 'dart:async';
 import 'calculator_event.dart';
 import 'calculator_state.dart';
 
-class CalculatorBloc {
-  final StreamController<CalculatorState> _stateController =
-      StreamController<CalculatorState>();
-  final StreamController<CalculatorEvent> _eventController =
-      StreamController<CalculatorEvent>();
+import 'package:stream_bloc/stream_bloc.dart';
+
+class CalculatorBloc extends StreamBloc<CalculatorEvent, CalculatorState> {
   CalculatorState _state = CalculatorState(0);
 
-  CalculatorBloc() {
-    _eventController.stream.listen(
-      (event) {
-        _mapEvent(event);
-      },
-    );
-  }
+  CalculatorBloc() : super(new CalculatorState(0));
 
-  Stream<CalculatorState> get state => _stateController.stream;
-
-  void addEvent(CalculatorEvent event) {
-    _eventController.add(event);
-  }
-
-  void _add(CalculatorEventAdd event) {
+  Stream<CalculatorState> _add(CalculatorEventAdd event) async* {
     _state += event.number;
-    _stateController.add(_state);
+    yield _state;
   }
 
-  void _sub(CalculatorEventSub event) {
+  Stream<CalculatorState> _sub(CalculatorEventSub event) async* {
     _state -= event.number;
-    _stateController.add(_state);
+    yield _state;
   }
 
-  void _multi(CalculatorEventMulti event) {
+  Stream<CalculatorState> _multi(CalculatorEventMulti event) async* {
     _state *= event.number;
-    _stateController.add(_state);
+    yield _state;
   }
 
-  void _div(CalculatorEventDiv event) {
+  Stream<CalculatorState> _div(CalculatorEventDiv event) async* {
     _state /= event.number;
-    _stateController.add(_state);
+    yield _state;
   }
 
-  void _mapEvent(CalculatorEvent event) {
-    event.map(add: _add, sub: _sub, multi: _multi, div: _div);
-  }
-
-  void close() {
-    _stateController.close();
-    _eventController.close();
-  }
+  @override
+  Stream<CalculatorState> mapEventToStates(CalculatorEvent event) =>
+      event.map(add: _add, sub: _sub, multi: _multi, div: _div);
 }
